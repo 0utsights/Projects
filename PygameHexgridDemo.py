@@ -19,10 +19,17 @@ def hex_points(cx, cy, size):
         y = cy + size * math.sin(angle)
         points.append((x, y))
     return points
+
 hexes = [
     (0,0),
     (1,0),
-    (0,1)
+    (0,1),
+    (1,1),
+    (-1,0),
+    (0,-1),
+    (-1,-1),
+    (1,-1),
+    (-1,1)
 ]
 
 # GAME LOOP
