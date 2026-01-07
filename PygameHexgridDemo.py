@@ -1,54 +1,58 @@
 import pygame, math
+
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+W, H = 800, 600
+screen = pygame.display.set_mode((W, H))
+clock = pygame.time.Clock()
 
-size = 40 # outer radius of hexagon from pointy angles
+size = 30
 
-# HEXAGON FORMULA
+def axial_to_pixel(q, r, s):
+    x = math.sqrt(3) * s * (q + r/2)
+    y = 1.5 * s * r
+    return x, y
 
-def axial_to_pixel(q, r, size):
-    x = math.sqrt(3) * size * (q+r/2)
-    y = 3/2 * size * r
-    return x,y
+def hex_points(cx, cy, s):
+    pts = []
+    for i in range(6):
+        a = math.radians(60*i - 30)
+        pts.append((cx + s*math.cos(a), cy + s*math.sin(a)))
+    return pts
 
-def hex_points(cx, cy, size):
-    points = []
-    for i in range(6): # 6 corners
-        angle = math.radians(60 * i - 30) # pointy top
-        x = cx + size * math.cos(angle)
-        y = cy + size * math.sin(angle)
-        points.append((x, y))
-    return points
+# camera in world pixels
+cam_x, cam_y = 0.0, 0.0
+vx, vy = 60.0, 0.0  # pixels/second (pan right)
 
-hexes = [
-    (0,0),
-    (1,0),
-    (0,1),
-    (1,1),
-    (-1,0),
-    (0,-1),
-    (-1,-1),
-    (1,-1),
-    (-1,1)
-]
-
-# GAME LOOP
+# how many hex coords to draw around the camera (overshoot is fine)
+Q_RANGE = 25
+R_RANGE = 25
 
 running = True
 while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    dt = clock.tick(60) / 1000.0  # seconds
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT:
             running = False
-    screen.fill((20,20,20))
 
-    for q, r in hexes:
-        x, y = axial_to_pixel(q,r,size)
+    # move camera (this is the panning)
+    cam_x += vx * dt
+    cam_y += vy * dt
 
-        #center the hexgrid in relation to screen size
-        x += 400
-        y += 300
+    screen.fill((20, 20, 20))
 
-        pygame.draw.polygon(screen, (120, 200, 255), hex_points(x,y,size), 2)
+    # pick an approximate "center hex" to loop around
+    # (simple approach: just loop a fixed box; good enough for now)
+    for q in range(-Q_RANGE, Q_RANGE + 1):
+        for r in range(-R_RANGE, R_RANGE + 1):
+            wx, wy = axial_to_pixel(q, r, size)      # world coords
+            sx = wx - cam_x + W/2                    # to screen
+            sy = wy - cam_y + H/2
+
+            # quick cull: skip drawing if it's far off-screen
+            if sx < -2*size or sx > W + 2*size or sy < -2*size or sy > H + 2*size:
+                continue
+
+            pygame.draw.polygon(screen, (120, 200, 255), hex_points(sx, sy, size), 1)
 
     pygame.display.flip()
 
