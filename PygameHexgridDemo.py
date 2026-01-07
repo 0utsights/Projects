@@ -4,20 +4,24 @@ pygame.init()
 screen = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 
-size = 40
-horiz = math.sqrt(3) * size      # center-to-center distance (east/west)
-vert  = 1.5 * size               # center-to-center distance (down/up)
+size = 40  # outer radius ("size" on Red Blob)
 
-def hex_points(cx, cy, size):
+def axial_to_pixel(q, r, s):
+    # pointy-top axial -> pixel (Red Blob)
+    x = math.sqrt(3) * s * (q + r/2)
+    y = (3/2) * s * r
+    return x, y
+
+def hex_points(cx, cy, s):
     pts = []
     for i in range(6):
-        a = math.radians(60*i - 30)  # pointy-top rotation
-        pts.append((cx + size*math.cos(a), cy + size*math.sin(a)))
+        a = math.radians(60*i - 30)  # pointy-top
+        pts.append((cx + s*math.cos(a), cy + s*math.sin(a)))
     return pts
 
-# one hex center + one neighbor center using the spacing formulas
-cx, cy = 250, 250
-cx2, cy2 = cx + horiz, cy + vert
+origin = (0, 0)
+east   = (1, 0)  # adjacent neighbor
+se     = (0, 1)  # adjacent neighbor (southeast in axial)
 
 running = True
 while running:
@@ -27,8 +31,12 @@ while running:
             running = False
 
     screen.fill((20, 20, 20))
-    pygame.draw.polygon(screen, (120, 200, 255), hex_points(cx,  cy,  size), 2)
-    pygame.draw.polygon(screen, (255, 180, 120), hex_points(cx2, cy2, size), 2)
+
+    for (q, r), color in [(origin, (120,200,255)), (east, (255,180,120)), (se, (180,255,140))]:
+        x, y = axial_to_pixel(q, r, size)
+        x += 400; y += 300  # center on screen
+        pygame.draw.polygon(screen, color, hex_points(x, y, size), 2)
+
     pygame.display.flip()
 
 pygame.quit()
