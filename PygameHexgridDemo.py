@@ -1,97 +1,46 @@
 import pygame, math
-
 pygame.init()
-W, H = 800, 600
-screen = pygame.display.set_mode((W, H))
-clock = pygame.time.Clock()
+W,H=800,600; screen=pygame.display.set_mode((W,H)); clock=pygame.time.Clock()
+s=30; SQ=math.sqrt(3)
 
-size = 30  # outer radius
+def a2p(q,r):  # axial->pixel (pointy)
+    return SQ*s*(q+r/2), 1.5*s*r
 
-def axial_to_pixel(q, r, s):
-    # pointy-top axial -> pixel (Red Blob)
-    x = math.sqrt(3) * s * (q + r/2)
-    y = 1.5 * s * r
-    return x, y
+def hexpts(cx,cy):
+    return [(cx+s*math.cos(math.radians(60*i-30)),
+             cy+s*math.sin(math.radians(60*i-30))) for i in range(6)]
 
-def pixel_to_axial(x, y, s):
-    # inverse of the above (pointy-top)
-    q = (math.sqrt(3)/3 * x - 1/3 * y) / s
-    r = (2/3 * y) / s
-    return q, r
+# camera in fractional axial coords (wrapped => perfect loop)
+cam_q=cam_r=0.0
+P=40  # repeat period in hexes (bigger = less obvious repetition)
 
-def cube_round(q, r):
-    # axial (q,r) -> cube (x,y,z), round, back to axial
-    x = q
-    z = r
-    y = -x - z
+# screen-sized draw window (+margin)
+Q=int(W/(SQ*s))+3
+R=int(H/(1.5*s))+3
 
-    rx, ry, rz = round(x), round(y), round(z)
+# pan speed in pixels/sec (diagonal)
+vx,vy=90.0,60.0
 
-    dx, dy, dz = abs(rx - x), abs(ry - y), abs(rz - z)
-    if dx > dy and dx > dz:
-        rx = -ry - rz
-    elif dy > dz:
-        ry = -rx - rz
-    else:
-        rz = -rx - ry
-
-    return int(rx), int(rz)  # back to axial q,r
-
-def hex_points(cx, cy, s):
-    pts = []
-    for i in range(6):
-        a = math.radians(60*i - 30)  # pointy-top
-        pts.append((cx + s*math.cos(a), cy + s*math.sin(a)))
-    return pts
-
-# camera in world pixels
-cam_x, cam_y = 0.0, 0.0
-vx, vy = 80.0, 50.0  # pixels per second
-
-# how many hexes around camera-center to draw
-Q_RANGE = 22
-R_RANGE = 22
-
-# optional: wrap in AXIAL space to guarantee "wallpaper repeat"
-PERIOD = 80  # bigger = less obvious repetition
-
-running = True
-while running:
-    dt = clock.tick(60) / 1000.0
+run=True
+while run:
+    dt=clock.tick(60)/1000
     for e in pygame.event.get():
-        if e.type == pygame.QUIT:
-            running = False
+        if e.type==pygame.QUIT: run=False
 
-    cam_x += vx * dt
-    cam_y += vy * dt
+    # pixel velocity -> axial delta (inverse of a2p)
+    dq=(SQ/3*vx - 1/3*vy)/s * dt
+    dr=(2/3*vy)/s * dt
+    cam_q=(cam_q+dq)%P
+    cam_r=(cam_r+dr)%P
 
-    # Find which hex the camera is near (in axial coords)
-    fq, fr = pixel_to_axial(cam_x, cam_y, size)
-    cq, cr = cube_round(fq, fr)
-
-    # Wrap the *center hex* so the pattern repeats forever
-    cq %= PERIOD
-    cr %= PERIOD
-
-    screen.fill((20, 20, 20))
-
-    # Draw a window around the camera-center hex
-    for dq in range(-Q_RANGE, Q_RANGE + 1):
-        for dr in range(-R_RANGE, R_RANGE + 1):
-            q = cq + dq
-            r = cr + dr
-
-            wx, wy = axial_to_pixel(q, r, size)
-
-            # world -> screen: subtract camera, then center
-            sx = wx - cam_x + W/2
-            sy = wy - cam_y + H/2
-
-            if sx < -2*size or sx > W + 2*size or sy < -2*size or sy > H + 2*size:
-                continue
-
-            pygame.draw.polygon(screen, (120, 200, 255), hex_points(sx, sy, size), 1)
+    screen.fill((20,20,20))
+    cq,cr=int(cam_q),int(cam_r)   # draw around camera’s current cell
+    for q in range(cq-Q, cq+Q+1):
+        for r in range(cr-R, cr+R+1):
+            x,y=a2p((q-cam_q), (r-cam_r))   # RELATIVE coords = camera built-in
+            x+=W/2; y+=H/2
+            if x<-2*s or x>W+2*s or y<-2*s or y>H+2*s: continue
+            pygame.draw.polygon(screen,(120,200,255),hexpts(x,y),1)
 
     pygame.display.flip()
-
 pygame.quit()
