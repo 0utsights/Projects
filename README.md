@@ -1,5 +1,3 @@
-0utsights
-
 This repository serves as the home for projects under the 0utsights GitHub account. It’s a collection of learning-focused work, experiments, and portfolio projects covering programming fundamentals, algorithms, and web development.
 
 About
