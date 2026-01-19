@@ -18,7 +18,34 @@ body {
 }
 
 .app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: 13.375rem;
+  padding: 1rem 1.0625rem;
+}
 
+.title {
+
+  display: flex;
+  padding: 0.25rem 0.625rem;
+  justify-content: center;
+  align-items: center;
+  gap:0.625rem;
+
+  border-radius: 6.25rem;
+  border: 1px solid #95A88D;
+  background: #413C58;
+
+  color: var(--white, #FFF);
+
+  font-family: "Pixelify Sans";
+  font-size: 1ram;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 button,
