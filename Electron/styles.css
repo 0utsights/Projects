@@ -18,7 +18,6 @@ body {
 }
 
 .app {
-<<<<<<< HEAD:ElectronDemo/styles.css
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,9 +25,6 @@ body {
   gap: 0.5rem;
   width: 13.375rem;
   padding: 1rem 1.0625rem;
-=======
-  border-radius: 20px;
->>>>>>> 0e8c29ec5c412bb10a7e627abf98cbf35dc94fda:Electron/styles.css
 }
 
 .title {
@@ -37,29 +33,63 @@ body {
   padding: 0.25rem 0.625rem;
   justify-content: center;
   align-items: center;
-<<<<<<< HEAD:ElectronDemo/styles.css
   gap:0.625rem;
-=======
-  gap: 0.625rem;
->>>>>>> 0e8c29ec5c412bb10a7e627abf98cbf35dc94fda:Electron/styles.css
 
   border-radius: 6.25rem;
-  border: 1px solid #95A88D;
-  background: #413C58;
+  border: 1px solid #413C58;
+  background: #95A88D;
 
-<<<<<<< HEAD:ElectronDemo/styles.css
   color: var(--white, #FFF);
 
   font-family: "Pixelify Sans";
   font-size: 1ram;
-=======
-  color: var(--white, #FFFFFF);
-  font-family: "Pixelify Sans";
-  font-size: 1rem;
->>>>>>> 0e8c29ec5c412bb10a7e627abf98cbf35dc94fda:Electron/styles.css
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+
+#calendar {
+  display: flex;
+  width: 11.25rem;
+  height: 10.0625rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  background-image: url('./assets/inner-frame-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#month {
+  color: #FFF;
+  text-align: center;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--mid-green, #95A88D);
+  font-family: "Pixelify Sans";;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: 0.3rem;
+
+  width: 0.125rem;
+
+}
+
+#day {
+  color: #FFF;
+  text-align: center;
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: var(--mid-green, #95A88D);
+  font-family: "Pixelify Sans";;
+  font-size:7.5rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing:0.45rem;
 }
 
 button,
