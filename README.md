@@ -1,8 +1,3 @@
-Below is a **clean, natural README rewrite** you can drop straight into your **Projects** repo.
-It’s written to sound like a real developer portfolio (not AI-ish), clearly explains *why* the repo exists, and specifically calls out **PygameHexGridDemo** → **JavaScript translation**, and the **Electron demo** with proper attribution.
-
----
-
 # Projects
 
 This repository is a collection of **small, focused projects** I’ve built to learn, experiment, and improve my programming skills across different languages, frameworks, and environments.
