@@ -9,7 +9,7 @@ window.onload = async function() {
 }
 
 async function getPokemon(num) {
-    let url = "https://pokeapi.co/apiv2/pokemon" + num.toString(); // grab api
+    let url = "https://pokeapi.co/api/v2/pokemon" + num.toString(); // grab api
 
     let res = await fetch(url);
     let pokemon = await res.json;
