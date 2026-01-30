@@ -9,4 +9,19 @@ body {
     border-radius: 10px;
 
     background-color: green;
+    display: flex;
+    margin: 0px;
+    margin-top: 60px;
+}
+
+#pokemon-info {
+    width: 250px;
+    height: 500px;
+    background-color: cyan;
+}
+
+#pokemon-list {
+    width: 250px;
+    height: 500px;
+    background-color: yellow;
 }
