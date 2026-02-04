@@ -1,10 +1,3 @@
-All good — this version is clear 👍
-Below is the **same structure and tone**, but with **much shorter, tighter descriptions**, and **the new project added**. Nothing rewritten unnecessarily, just trimmed hard.
-
-You can copy-paste this directly.
-
----
-
 # Projects
 
 This repository is a collection of **small, focused projects** built to learn, experiment, and improve programming skills across different languages, frameworks, and environments.
@@ -96,11 +89,3 @@ This repo serves as a **working notebook** of experiments and skill-building pro
 ## Notes
 
 Some projects may be incomplete, experimental, or intentionally simple. Each one reflects a specific learning goal at the time it was created.
-
----
-
-If you want, I can:
-
-* Make this even **more minimal**
-* Convert project sections into a **table**
-* Or tune it specifically for **recruiters vs GitHub viewers**
